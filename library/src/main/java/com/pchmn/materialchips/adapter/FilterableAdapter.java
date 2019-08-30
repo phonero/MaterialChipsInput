@@ -96,11 +96,6 @@ public class FilterableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             public void onChipRemoved(ChipInterface chip, int newSize) {
                 addChip(chip);
             }
-
-            @Override
-            public void onTextChanged(CharSequence text) {
-                mRecyclerView.scrollToPosition(0);
-            }
         });
     }
 
