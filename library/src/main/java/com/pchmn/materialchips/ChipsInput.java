@@ -139,6 +139,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
         mRecyclerView.setLayoutManager(chipsLayoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(mChipsAdapter);
+        mRecyclerView.setMinimumHeight(110);
 
         // set window callback
         // will hide DetailedOpenView and hide keyboard on touch outside
@@ -242,22 +243,9 @@ public class ChipsInput extends ScrollViewMaxHeight {
     }
 
     public void onChipRemoved(ChipInterface chip, int size) {
-        for(ChipsListener chipsListener: mChipsListenerList) {
-            chipsListener.onChipRemoved(chip, size);
-        }
-    }
-
-    public void onTextChanged(CharSequence text) {
-        if(mChipsListener != null) {
+        if (mChipsListenerList.size() > 0) {
             for(ChipsListener chipsListener: mChipsListenerList) {
-                chipsListener.onTextChanged(text);
-            }
-            // show filterable list
-            if(mFilterableListView != null) {
-                if(text.length() > 0)
-                    mFilterableListView.filterList(text);
-                else
-                    mFilterableListView.fadeOut();
+                chipsListener.onChipRemoved(chip, size);
             }
         }
     }
@@ -270,95 +258,21 @@ public class ChipsInput extends ScrollViewMaxHeight {
         return mHint;
     }
 
-    public void setHint(String mHint) {
-        this.mHint = mHint;
-    }
-
-    public void setHintColor(ColorStateList mHintColor) {
-        this.mHintColor = mHintColor;
-    }
-
-    public void setTextColor(ColorStateList mTextColor) {
-        this.mTextColor = mTextColor;
-    }
-
-    public ChipsInput setMaxRows(int mMaxRows) {
-        this.mMaxRows = mMaxRows;
-        return this;
-    }
-
-    public void setChipLabelColor(ColorStateList mLabelColor) {
-        this.mChipLabelColor = mLabelColor;
-    }
-
-    public void setChipHasAvatarIcon(boolean mHasAvatarIcon) {
-        this.mChipHasAvatarIcon = mHasAvatarIcon;
-    }
-
     public boolean chipHasAvatarIcon() {
         return mChipHasAvatarIcon;
-    }
-
-    public void setChipDeletable(boolean mDeletable) {
-        this.mChipDeletable = mDeletable;
-    }
-
-    public void setChipDeleteIcon(Drawable mDeleteIcon) {
-        this.mChipDeleteIcon = mDeleteIcon;
-    }
-
-    public void setChipDeleteIconColor(ColorStateList mDeleteIconColor) {
-        this.mChipDeleteIconColor = mDeleteIconColor;
-    }
-
-    public void setChipBackgroundColor(ColorStateList mBackgroundColor) {
-        this.mChipBackgroundColor = mBackgroundColor;
-    }
-
-    public ChipsInput setShowChipDetailed(boolean mShowChipDetailed) {
-        this.mShowChipDetailed = mShowChipDetailed;
-        return this;
     }
 
     public boolean isShowChipDetailed() {
         return mShowChipDetailed;
     }
 
-    public void setChipDetailedTextColor(ColorStateList mChipDetailedTextColor) {
-        this.mChipDetailedTextColor = mChipDetailedTextColor;
-    }
-
-    public void setChipDetailedDeleteIconColor(ColorStateList mChipDetailedDeleteIconColor) {
-        this.mChipDetailedDeleteIconColor = mChipDetailedDeleteIconColor;
-    }
-
-    public void setChipDetailedBackgroundColor(ColorStateList mChipDetailedBackgroundColor) {
-        this.mChipDetailedBackgroundColor = mChipDetailedBackgroundColor;
-    }
-
-    public void setFilterableList(List<? extends ChipInterface> list) {
-        mChipList = list;
-        mFilterableListView = new FilterableListView(mContext);
-        mFilterableListView.build(mChipList, this, mFilterableListBackgroundColor, mFilterableListTextColor);
-        mChipsAdapter.setFilterableListView(mFilterableListView);
-    }
-
-    public List<? extends ChipInterface> getFilterableList() {
-        return mChipList;
-    }
-
     public ChipValidator getChipValidator() {
         return mChipValidator;
-    }
-
-    public void setChipValidator(ChipValidator mChipValidator) {
-        this.mChipValidator = mChipValidator;
     }
 
     public interface ChipsListener {
         void onChipAdded(ChipInterface chip, int newSize);
         void onChipRemoved(ChipInterface chip, int newSize);
-        void onTextChanged(CharSequence text);
     }
 
     public interface ChipValidator {
