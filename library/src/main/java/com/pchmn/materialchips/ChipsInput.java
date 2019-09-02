@@ -139,7 +139,7 @@ public class ChipsInput extends ScrollViewMaxHeight {
         mRecyclerView.setLayoutManager(chipsLayoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(mChipsAdapter);
-        mRecyclerView.setMinimumHeight(110);
+        mRecyclerView.setMinimumHeight(150);
 
         // set window callback
         // will hide DetailedOpenView and hide keyboard on touch outside
