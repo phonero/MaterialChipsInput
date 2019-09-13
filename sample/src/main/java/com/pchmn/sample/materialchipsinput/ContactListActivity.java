@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -61,6 +61,11 @@ public class ContactListActivity extends AppCompatActivity {
             public void onChipRemoved(ChipInterface chip, int newSize) {
                 Log.e(TAG, "chip removed, " + newSize);
             }
+
+            @Override
+            public void onTextChanged(CharSequence text) {
+                Log.e(TAG, "text changed: " + text.toString());
+            }
         });
 
         // show selected chips
@@ -114,9 +119,11 @@ public class ContactListActivity extends AppCompatActivity {
                 ContactChip contactChip = new ContactChip(id, avatarUri, name, phoneNumber);
                 // add contact to the list
                 mContactList.add(contactChip);
-                mChipsInput.addChip(contactChip);
             }
             phones.close();
         }
+
+        // pass contact list to chips input
+        mChipsInput.setFilterableList(mContactList);
     }
 }

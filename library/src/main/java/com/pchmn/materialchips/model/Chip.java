@@ -3,8 +3,8 @@ package com.pchmn.materialchips.model;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class Chip implements ChipInterface {
 

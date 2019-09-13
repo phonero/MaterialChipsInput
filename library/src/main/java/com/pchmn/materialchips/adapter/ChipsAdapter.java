@@ -2,10 +2,11 @@ package com.pchmn.materialchips.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.views.ChipsInputEditText;
 import com.pchmn.materialchips.views.DetailedChipView;
+import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.FilterableListView;
 
@@ -44,6 +46,8 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mChipsInput = chipsInput;
         mRecycler = recycler;
         mHintLabel = mChipsInput.getHint();
+        mEditText = mChipsInput.getEditText();
+        initEditText();
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -68,15 +72,30 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ItemViewHolder(mChipsInput.getChipView());
+        if(viewType == TYPE_EDIT_TEXT)
+            return new EditTextViewHolder(mEditText);
+        else
+            return new ItemViewHolder(mChipsInput.getChipView());
+
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        itemViewHolder.chipView.inflate(getItem(position));
-        // handle click
-        handleClickOnEditText(itemViewHolder.chipView, position);
+        // edit text
+        if(position == mChipList.size()) {
+            if(mChipList.size() == 0)
+                mEditText.setHint(mHintLabel);
+
+            // auto fit edit text
+            //autofitEditText();
+        }
+        // chip
+        else if(getItemCount() > 1) {
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            itemViewHolder.chipView.inflate(getItem(position));
+            // handle click
+            handleClickOnEditText(itemViewHolder.chipView, position);
+        }
     }
 
     @Override
@@ -137,6 +156,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mChipsInput.onTextChanged(s);
             }
 
             @Override
@@ -257,6 +277,10 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mChipList.add(chip);
             // notify listener
             mChipsInput.onChipAdded(chip, mChipList.size());
+            // hide hint
+            mEditText.setHint(null);
+            // reset text
+            mEditText.setText(null);
             // refresh data
             notifyItemInserted(mChipList.size());
         }
@@ -267,6 +291,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mChipList.remove(position);
         // notify listener
         notifyItemRangeChanged(position, getItemCount());
+        // if 0 chip
+        if (mChipList.size() == 0)
+            mEditText.setHint(mHintLabel);
         // refresh data
         notifyDataSetChanged();
     }
@@ -277,6 +304,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mChipList.remove(position);
         // notify listener
         mChipsInput.onChipRemoved(chip, mChipList.size());
+        // if 0 chip
+        if (mChipList.size() == 0)
+            mEditText.setHint(mHintLabel);
         // refresh data
         notifyDataSetChanged();
     }
@@ -291,6 +321,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mChipsInput.onChipRemoved(chip, mChipList.size());
             }
         }
+        // if 0 chip
+        if (mChipList.size() == 0)
+            mEditText.setHint(mHintLabel);
         // refresh data
         notifyDataSetChanged();
     }
@@ -305,6 +338,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mChipsInput.onChipRemoved(chip, mChipList.size());
             }
         }
+        // if 0 chip
+        if (mChipList.size() == 0)
+            mEditText.setHint(mHintLabel);
         // refresh data
         notifyDataSetChanged();
     }
@@ -319,6 +355,9 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mChipsInput.onChipRemoved(chip, mChipList.size());
             }
         }
+        // if 0 chip
+        if (mChipList.size() == 0)
+            mEditText.setHint(mHintLabel);
         // refresh data
         notifyDataSetChanged();
     }
