@@ -299,6 +299,10 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void removeChip(int position) {
+        if (position >= mChipList.size()) {
+            return;
+        }
+
         ChipInterface chip = mChipList.get(position);
         // remove contact
         mChipList.remove(position);
