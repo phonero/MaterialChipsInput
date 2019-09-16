@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pchmn.materialchips.adapter.ChipsAdapter;
@@ -139,7 +138,6 @@ public class ChipsInput extends ScrollViewMaxHeight {
         mRecyclerView.setLayoutManager(chipsLayoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(mChipsAdapter);
-        mRecyclerView.setMinimumHeight(150);
 
         // set window callback
         // will hide DetailedOpenView and hide keyboard on touch outside
